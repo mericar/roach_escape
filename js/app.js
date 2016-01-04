@@ -56,16 +56,26 @@ Player.prototype.resetLocation = function(){
 //Instantiate player variable
 var player = new Player();
 
-// Purpose: Updates the player instance's position
+// Purpose: Updates the player game state
 // Param: dt is a time delta
 Player.prototype.update = function() {
-    // Check collisions?
-    var checkPlayerState = function (){
-        // TODO:
-        //Check player state, 
-    }
-
+    // Check collisions by looking at the
+    (function (){
+        for (var e = 0; e < allEnemies.length; e++) {
+            if (allEnemies[e].x <= (player.x + 30) && (allEnemies[e].x + 30) >= player.x && 
+                allEnemies[e].y <= (player.y + 30) && (allEnemies[e].y + 30) >= player.y)
+            {
+                player.resetLocation();
+                window.alert("    :(    Try Again Champ!!!    ");
+            }
+        }
+        if (player.y <= -10){
+            window.alert("    :D    Way To Go Boss!!!    ");
+            player.resetLocation();
+        }
+    })();
 };
+
 
 //Draw player on the screen
 Player.prototype.render = function() {
