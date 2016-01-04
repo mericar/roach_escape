@@ -1,37 +1,102 @@
-// Enemies our player must avoid
-var Enemy = function() {
-    // Variables applied to each of our instances go here,
-    // we've provided one for you to get started
+// kibo variable for controlling keyboard input:
+var kibo = new Kibo();
 
-    // The image/sprite for our enemies, this uses
-    // a helper we've provided to easily load images
+
+// Enemy object
+// Purpose: template for creating Enemy objects
+//Param: x,y: screen-xcoord, screen y-coord
+var Enemy = function(x, y) {
+    // instance vars:
     this.sprite = 'images/enemy-bug.png';
+    this.x = x;
+    this.y = y;
 };
 
-// Update the enemy's position, required method for game
-// Parameter: dt, a time delta between ticks
+// Purpose: Updates the enemy instance's position
+// Param: dt is a time delta
 Enemy.prototype.update = function(dt) {
-    // You should multiply any movement by the dt parameter
-    // which will ensure the game runs at the same speed for
-    // all computers.
+    this.x = this.x * dt;
+    this.y = this.y * dt;
 };
 
-// Draw the enemy on the screen, required method for game
+// Draw the enemy on the screen
 Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
 
 
+// The Player class
 
-// Now write your own player class
 // This class requires an update(), render() and
 // a handleInput() method.
+var Player = function(x, y) {
+    this.sprite = 'images/char-cat-girl.png';
+    this.x = x;
+    this.y = y;
+};
+
+// Purpose: Updates the player instance's position
+// Param: dt is a time delta
+Player.prototype.update = function(dt) {
+    this.x = this.x * dt;
+    this.y = this.y * dt;
+};
+
+//Draw player on the screen
+Player.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
 
 
-// Now instantiate your objects.
-// Place all enemy objects in an array called allEnemies
-// Place the player object in a variable called player
+
+Player.prototype.handleInput = function(keycode) {
+    switch(keycode) {
+        case 37:
+        k.up(['up', 'w'], function() {
+            player.y = player.y - 1;
+        });
+        break;
+
+        case 38:
+        k.up(['down', 's'], function() {
+            player.y = player.y + 1;
+        });
+        break;
+
+        case 39:
+        k.up(['left', 'a'], function() {
+            player.x = player.x - 1;
+        });
+        break;
+
+        case 40:
+        k.up(['right', 'd'], function() {
+            player.x = player.x + 1;
+        });
+        break;
+    } 
+};
+
+
+//Instantiation of Enemies and Player
+
+//Number of enemies in play
+var numEnemies = 6;
+//Array of Enemies available for play
+var allEnemies = [];
+
+//Purpose: Populate allEnemies Array
+// Anon. Func for populating array "allEnemies"
+(function (numEnemies, allEnemies){
+    for(var e = 0; e < numEnemies; e++){
+        allEnemies.push(new Enemy(0,0));
+    }
+})();
+
+var player = new Player(200,406);
+
+
 
 
 
