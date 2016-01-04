@@ -80,7 +80,6 @@ var Engine = (function(global) {
      */
     function update(dt) {
         updateEntities(dt);
-        // checkCollisions();
     }
 
     /* This is called by the update function and loops through all of the
@@ -91,6 +90,11 @@ var Engine = (function(global) {
      * render methods.
      */
     function updateEntities(dt) {
+        //update gems
+        allGems.forEach(function(gem){
+            gem.update(dt);
+        });
+        //update enemies!
         allEnemies.forEach(function(enemy) {
             enemy.update(dt);
         });
@@ -116,7 +120,7 @@ var Engine = (function(global) {
                 'images/grass-block.png'    // Row 2 of 2 of grass
             ],
             numRows = 6,
-            numCols = 10,
+            numCols = 11,
             row, col;
 
         /* Loop through the number of rows and columns we've defined above
@@ -147,6 +151,11 @@ var Engine = (function(global) {
         /* Loop through all of the objects within the allEnemies array and call
          * the render function you have defined.
          */
+        // render gems:
+        allGems.forEach(function(gem){
+            gem.render();
+        });
+        // render enemies:
         allEnemies.forEach(function(enemy) {
             enemy.render();
         });
@@ -167,6 +176,10 @@ var Engine = (function(global) {
      * all of these images are properly loaded our game will start.
      */
     Resources.load([
+        'images/Rock.png',
+        'images/Gem-Orange.png',
+        'images/Gem-Green.png',
+        'images/Gem-Blue.png',
         'images/stone-block.png',
         'images/water-block.png',
         'images/grass-block.png',

@@ -1,9 +1,51 @@
+//GemType
+var gemType = {
+    'green':'images/Gem-Green.png',
+    'blue':'images/Gem-Blue.png',
+    'orange':'images/Gem-Orange.png',
+}
+
+//Gem object
+var Gem = function(x, y, pace, gemtype){
+    switch(gemtype){
+        case 'green':
+        this.sprite = gemType.green;
+        break;
+
+        case 'blue':
+        this.sprite = gemType.blue;
+        break;
+
+        case 'orange':
+        this.sprite = gemType.orange;
+        break;
+    }
+    this.pace = pace;
+    this.x = x;
+    this.y = y;
+}
+
+// Purpose: updates location of Gem
+// Param: dt is a time delta
+Gem.prototype.update = function(dt) {
+    if (this.x <= 1100){
+        this.x += this.pace * dt;
+    }else{
+        this.x = 0;
+    }
+};
+
+// Draw the Gem on the screen
+Gem.prototype.render = function() {
+    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+};
+
+
 
 // Enemy object
 // Purpose: template for creating Enemy objects
 //Param: x,y: screen-xcoord, screen y-coord
 var Enemy = function(x, y, pace) {
-    // instance vars:
     this.sprite = 'images/enemy-bug.png';
     this.pace = pace;
     this.x = x;
@@ -13,7 +55,7 @@ var Enemy = function(x, y, pace) {
 // Purpose: Updates the enemy instance's position
 // Param: dt is a time delta
 Enemy.prototype.update = function(dt) {
-    if (this.x <= 560){
+    if (this.x <= 1100){
         this.x += this.pace * dt;
     }else{
         this.x = 0;
@@ -25,18 +67,26 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
+
+//Instantiation of Gems
+var allGems = [];
+var g1 = new Gem(400,200,175,'orange');
+allGems.push(g1);
+
+
 //Instantiation of Enemies
 var allEnemies = [];
 
-var e1 = new Enemy(75,200,250);
-var e2 = new Enemy(300,100,300);
-var e3 = new Enemy(175,50,350);
+var e1 = new Enemy(75,200,200);
+var e2 = new Enemy(300,135,300);
+var e3 = new Enemy(175,50,150);
 var e4 = new Enemy(250,250,250);
-var e5 = new Enemy(400,200,200);
-var e6 = new Enemy(0,100,400);
+var e5 = new Enemy(0,100,400);
 
 //Populates array of enemies:
-allEnemies.push(e1,e3,e4,e6);
+allEnemies.push(e1,e2,e3,e4,e5);
+
+
 
 
 
@@ -44,12 +94,12 @@ allEnemies.push(e1,e3,e4,e6);
 var Player = function() {
     this.sprite = 'images/char-boy.png';
     this.pace = 30;
-    this.x = 200;
+    this.x = 450;
     this.y = 410;
 };
 
 Player.prototype.resetLocation = function(){
-    player.x = 200;
+    player.x = 450;
     player.y = 410;
 }
 
@@ -76,14 +126,12 @@ Player.prototype.update = function() {
     })();
 };
 
-
 //Draw player on the screen
 Player.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
-
+// Handles the input for the game
 Player.prototype.handleInput = function(keycode) {
     switch(keycode) {
         case 'left':
@@ -105,10 +153,10 @@ Player.prototype.handleInput = function(keycode) {
             break;
 
         case 'right':
-            if(player.x + player.pace <= 420){
+            if(player.x + player.pace <= 990){
                 player.x +=  player.pace;
             }else{
-                player.x = 420;
+                player.x = 990;
             }
             console.log(player.x + ' , ' + player.y);
             break;
@@ -125,9 +173,11 @@ Player.prototype.handleInput = function(keycode) {
 };
 
 
+
+
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
-document.addEventListener('keyup', function(e) {
+document.addEventListener('keydown', function(e) {
     var allowedKeys = {
         37: 'left',
         38: 'up',
