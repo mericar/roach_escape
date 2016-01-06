@@ -70,8 +70,11 @@ Enemy.prototype.render = function() {
 
 //Instantiation of Gems
 var allGems = [];
-var g1 = new Gem(400,200,175,'orange');
-allGems.push(g1);
+var g1 = new Gem(40,50,175,'orange');
+var g2 = new Gem(400,200,175,'blue');
+var g3 = new Gem(800,125,175,'green');
+//Populates array of Gems
+allGems.push(g1,g2,g3);
 
 
 //Instantiation of Enemies
@@ -83,9 +86,8 @@ var e3 = new Enemy(175,50,150);
 var e4 = new Enemy(250,250,250);
 var e5 = new Enemy(0,100,400);
 
-//Populates array of enemies:
+//Populates array of enemies
 allEnemies.push(e1,e2,e3,e4,e5);
-
 
 
 
