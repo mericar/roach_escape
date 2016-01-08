@@ -1,7 +1,4 @@
 
-// Point bucket, initial values given.
-var Score = 0;
-
 //GemType
 var gemPic = {
     'green':'images/Gem-Green.png',
@@ -11,14 +8,15 @@ var gemPic = {
 
 
 var gemPoints = {
-    'green':100,
-    'blue':500,
-    'orange':1000,
+    'green': 100,
+    'blue': 500,
+    'orange': 1000,
 };
 
 function getGemPoints(gemtype){
     return gemPoints.gemtype;
 };
+console.log(getGemPoints('green'));
 
 
 
@@ -121,6 +119,7 @@ var Player = function() {
     this.pace = 30;
     this.x = 450;
     this.y = 410;
+    this.score = 0;
 };
 
 Player.prototype.resetLocation = function(){
@@ -134,8 +133,31 @@ var player = new Player();
 // Purpose: Updates the player game state
 // Param: dt is a time delta
 Player.prototype.update = function() {
-    // Calls stateCheck function
-    stateCheck();
+    for (var e = 0; e < allEnemies.length; e++) {
+            if (allEnemies[e].x <= (player.x + 30) && (allEnemies[e].x + 30) >= player.x && 
+                allEnemies[e].y <= (player.y + 30) && (allEnemies[e].y + 30) >= player.y)
+            {
+                window.alert("    :(    Try Again Champ!!!    ");
+                player.resetLocation();
+            }
+        }
+        //if collision with a gem occurs, the gem is claimed and the rendering funcs will take note.
+        for (var g = 0; g < allGems.length; g++) {
+            if (allGems[g].x <= (player.x + 30) && (allGems[g].x + 30) >= player.x && 
+                allGems[g].y <= (player.y + 30) && (allGems[g].y + 30) >= player.y)
+            {
+                allGems[g].claimed = true;
+                var points = getGemPoints(allGems[g].type);
+                player.score++;
+                player.updateScore;
+                console.log(player.score);
+            }
+        }        
+
+        if (player.y <= -10 && player.score > 10 ){
+            window.alert("    :D    Way To Go Boss!!!    ");
+            player.resetLocation();
+        }
 };
 
 //Draw player on the screen
@@ -183,49 +205,6 @@ Player.prototype.handleInput = function(keycode) {
             break;
     } 
 };
-
-function updateScore(){
-    document.getElementById("theScore").innerHTML = "Score: " + Score;
-};
-
-// Checks the state of the function by iterating through positions of game objects
-var stateCheck = function (){
-
-        for (var e = 0; e < allEnemies.length; e++) {
-            if (allEnemies[e].x <= (player.x + 30) && (allEnemies[e].x + 30) >= player.x && 
-                allEnemies[e].y <= (player.y + 30) && (allEnemies[e].y + 30) >= player.y)
-            {
-                window.alert("    :(    Try Again Champ!!!    ");
-                player.resetLocation();
-            }
-        }
-        //if collision with a gem occurs, the gem is claimed and the rendering funcs will take note.
-        for (var g = 0; g < allGems.length; g++) {
-            if (allGems[g].x <= (player.x + 30) && (allGems[g].x + 30) >= player.x && 
-                allGems[g].y <= (player.y + 30) && (allGems[g].y + 30) >= player.y)
-            {
-                allGems[g].claimed = true;
-                var points = getGemPoints(allGems[g].type);
-                Score += points;
-                window.alert(getGemPoints(allGems[g].type) + " points!!!    ");
-            }
-        }        
-
-        if (player.y <= -10 && Score > 0 ){
-            window.alert("    :D    Way To Go Boss!!!    ");
-            player.resetLocation();
-        }
-
-        if (player.y <= -10 && !(Score > 0) ){
-            window.alert("    :/    You need to get a gem before fleeing to the water !!!    ");
-        }
-    };
-
-
-
-
-
-
 
 
 // This listens for key presses and sends the keys to your

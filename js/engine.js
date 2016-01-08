@@ -26,6 +26,7 @@ var Engine = (function(global) {
         lastTime;
         // add inGame var to control game state flow (inGame is Boolean   )
         inGame = true;
+        
 
     canvas.width = 1100;
     canvas.height = 606;
@@ -119,7 +120,6 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
-        updateScore();
     }
 
     /* This function initially draws the "game level", it will then call
