@@ -1,0 +1,21 @@
+{
+  "name": "project3",
+  "homepage": "https://github.com/mirkmasterC/project3",
+  "authors": [
+    "mirkmasterC <mirkocarich@gmail.com>"
+  ],
+  "description": "js game project",
+  "main": "",
+  "moduleType": [],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "polymer": "Polymer/polymer#^1.2.0"
+  }
+}
