@@ -45,6 +45,17 @@ var Gem = function(x, y, pace, gemtype){
     this.claimed = false;
 }
 
+//Instantiation of Gems
+var allGems = [];
+var g1 = new Gem(40,50,990,'orange');
+var g2 = new Gem(400,200,675,'blue');
+var g3 = new Gem(800,125,800,'green');
+//Populates array of Gems
+allGems.push(g1,g2,g3);
+
+//gemCount
+var gemCount = allGems.length;
+
 // Purpose: updates location of Gem
 // Param: dt is a time delta
 Gem.prototype.update = function(dt) {
@@ -60,6 +71,14 @@ Gem.prototype.render = function() {
     if (!this.claimed){
         ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
     }
+};
+
+// reset Gem claimed status
+function gemReset() {
+            allGems.forEach(function(gem){
+            gem.claimed = false;
+            gemCount = allGems.length;
+        });
 };
 
 
@@ -91,16 +110,6 @@ Enemy.prototype.render = function() {
 
 
 
-//Instantiation of Gems
-var allGems = [];
-var g1 = new Gem(40,50,990,'orange');
-var g2 = new Gem(400,200,675,'blue');
-var g3 = new Gem(800,125,800,'green');
-//Populates array of Gems
-
-allGems.push(g1,g2,g3);
-
-
 //Instantiation of Enemies
 var allEnemies = [];
 
@@ -123,9 +132,10 @@ var Player = function() {
     this.score = 0;
 };
 
-Player.prototype.resetLocation = function(){
+Player.prototype.reset = function(){
     player.x = 450;
     player.y = 410;
+    player.score = 0;
 }
 
 //Instantiate player variable
@@ -139,7 +149,8 @@ Player.prototype.update = function() {
                 allEnemies[e].y <= (player.y + 30) && (allEnemies[e].y + 30) >= player.y)
             {
                 window.alert("    :(    Try Again Champ!!!    ");
-                player.resetLocation();
+                player.reset();
+                gemReset();
             }
         }
         //if collision with a gem occurs, the gem is claimed and the rendering funcs will take note.
@@ -150,15 +161,17 @@ Player.prototype.update = function() {
                 allGems[g].claimed = true;
                 var points = getGemPoints(allGems[g].type);
                 player.score++;
-                player.updateScore;
                 console.log(player.score);
             }
         }        
 
         if (player.y <= -10 && player.score > 10 ){
             window.alert("    :D    Way To Go Boss!!!    ");
-            player.resetLocation();
+            player.reset();
+            gemReset();
+
         }
+
 };
 
 //Draw player on the screen
