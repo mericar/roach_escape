@@ -97,6 +97,7 @@ var g1 = new Gem(40,50,990,'orange');
 var g2 = new Gem(400,200,675,'blue');
 var g3 = new Gem(800,125,800,'green');
 //Populates array of Gems
+
 allGems.push(g1,g2,g3);
 
 
