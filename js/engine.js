@@ -24,6 +24,8 @@ var Engine = (function(global) {
         canvas = doc.createElement('canvas'),
         ctx = canvas.getContext('2d'),
         lastTime;
+        // add inGame var to control game state flow (inGame is Boolean   )
+        inGame = false;
 
     canvas.width = 1100;
     canvas.height = 606;
@@ -45,6 +47,7 @@ var Engine = (function(global) {
         /* Call our update/render functions, pass along the time delta to
          * our update function since it may be used for smooth animation.
          */
+
         update(dt);
         render();
 
@@ -68,6 +71,23 @@ var Engine = (function(global) {
         lastTime = Date.now();
         main();
     }
+
+    /*This function returns the inGame state
+    */
+    function isInGame(){
+        return inGame;
+    }
+
+    /*This function sets inGame to true or false
+    */
+    function setInGame(bool){
+        inGame = bool;
+    }
+
+    //test code:
+    console.log(isInGame());
+    setInGame(true);
+    console.log(inGame);
 
     /* This function is called by main (our game loop) and itself calls all
      * of the functions which may need to update entity's data. Based on how

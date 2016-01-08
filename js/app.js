@@ -8,6 +8,7 @@ var gemType = {
 //Gem object
 var Gem = function(x, y, pace, gemtype){
     switch(gemtype){
+
         case 'green':
         this.sprite = gemType.green;
         break;
@@ -70,9 +71,9 @@ Enemy.prototype.render = function() {
 
 //Instantiation of Gems
 var allGems = [];
-var g1 = new Gem(40,50,175,'orange');
+var g1 = new Gem(40,50,400,'orange');
 var g2 = new Gem(400,200,175,'blue');
-var g3 = new Gem(800,125,175,'green');
+var g3 = new Gem(800,125,300,'green');
 //Populates array of Gems
 allGems.push(g1,g2,g3);
 
@@ -111,21 +112,8 @@ var player = new Player();
 // Purpose: Updates the player game state
 // Param: dt is a time delta
 Player.prototype.update = function() {
-    // Check collisions by looking at the
-    (function (){
-        for (var e = 0; e < allEnemies.length; e++) {
-            if (allEnemies[e].x <= (player.x + 30) && (allEnemies[e].x + 30) >= player.x && 
-                allEnemies[e].y <= (player.y + 30) && (allEnemies[e].y + 30) >= player.y)
-            {
-                player.resetLocation();
-                window.alert("    :(    Try Again Champ!!!    ");
-            }
-        }
-        if (player.y <= -10){
-            window.alert("    :D    Way To Go Boss!!!    ");
-            player.resetLocation();
-        }
-    })();
+    // Calls stateCheck function
+    stateCheck();
 };
 
 //Draw player on the screen
@@ -173,6 +161,34 @@ Player.prototype.handleInput = function(keycode) {
             break;
     } 
 };
+
+
+
+
+var stateCheck = function (){
+        for (var e = 0; e < allEnemies.length; e++) {
+            if (allEnemies[e].x <= (player.x + 30) && (allEnemies[e].x + 30) >= player.x && 
+                allEnemies[e].y <= (player.y + 30) && (allEnemies[e].y + 30) >= player.y)
+            {
+                player.resetLocation();
+                window.alert("    :(    Try Again Champ!!!    ");
+            }
+        }
+
+        for (var g = 0; g < allGems.length; g++) {
+            if (allGems[g].x <= (player.x + 30) && (allGems[g].x + 30) >= player.x && 
+                allGems[g].y <= (player.y + 30) && (allGems[g].y + 30) >= player.y)
+            {
+                window.alert("    10 points!!!    ");
+            }
+        }        
+
+        if (player.y <= -10){
+            window.alert("    :D    Way To Go Boss!!!    ");
+            player.resetLocation();
+        }
+    };
+
 
 
 
