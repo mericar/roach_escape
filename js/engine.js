@@ -25,7 +25,7 @@ var Engine = (function(global) {
         ctx = canvas.getContext('2d'),
         lastTime;
         // add inGame var to control game state flow (inGame is Boolean   )
-        inGame = false;
+        inGame = true;
 
     canvas.width = 1100;
     canvas.height = 606;
@@ -119,6 +119,7 @@ var Engine = (function(global) {
             enemy.update(dt);
         });
         player.update();
+        updateScore();
     }
 
     /* This function initially draws the "game level", it will then call
@@ -188,7 +189,7 @@ var Engine = (function(global) {
      * those sorts of things. It's only called once by the init() method.
      */
     function reset() {
-        // noop
+        // Purpose: Reset all Game vars 
     }
 
     /* Go ahead and load all of the images we know we're going to need to

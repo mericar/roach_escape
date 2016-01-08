@@ -1,10 +1,17 @@
 body {
     text-align: center;
+    font-family: "Courier", Times, sans-serif;
+    border-style: solid;
+    border-width: 1em;
+    border-color: brown;
+    margin: 1em;
 }
 
 .title {
+	margin: 90px;
 	border-style: solid;
     border-width: 1em;
+    border-spacing: 1em;
 	color: brown;
 	font-size: 3em;
 	font-family: "Courier", Times, sans-serif;

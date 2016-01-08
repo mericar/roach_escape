@@ -1,29 +1,50 @@
+
+// Point bucket, initial values given.
+var Score = 0;
+
 //GemType
-var gemType = {
+var gemPic = {
     'green':'images/Gem-Green.png',
     'blue':'images/Gem-Blue.png',
     'orange':'images/Gem-Orange.png',
-}
+};
+
+
+var gemPoints = {
+    'green':100,
+    'blue':500,
+    'orange':1000,
+};
+
+function getGemPoints(gemtype){
+    return gemPoints.gemtype;
+};
+
+
 
 //Gem object
 var Gem = function(x, y, pace, gemtype){
     switch(gemtype){
 
         case 'green':
-        this.sprite = gemType.green;
+        this.sprite = gemPic.green;
+        this.type = 'green'
         break;
 
         case 'blue':
-        this.sprite = gemType.blue;
+        this.sprite = gemPic.blue;
+        this.type = 'blue';
         break;
 
         case 'orange':
-        this.sprite = gemType.orange;
+        this.sprite = gemPic.orange;
+        this.type = 'orange';
         break;
     }
     this.pace = pace;
     this.x = x;
     this.y = y;
+    this.claimed = false;
 }
 
 // Purpose: updates location of Gem
@@ -36,9 +57,11 @@ Gem.prototype.update = function(dt) {
     }
 };
 
-// Draw the Gem on the screen
+// Draw the Gem on the screen if gem not claimed by player
 Gem.prototype.render = function() {
-    ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    if (!this.claimed){
+        ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
+    }
 };
 
 
@@ -69,11 +92,12 @@ Enemy.prototype.render = function() {
 };
 
 
+
 //Instantiation of Gems
 var allGems = [];
-var g1 = new Gem(40,50,400,'orange');
-var g2 = new Gem(400,200,175,'blue');
-var g3 = new Gem(800,125,300,'green');
+var g1 = new Gem(40,50,990,'orange');
+var g2 = new Gem(400,200,675,'blue');
+var g3 = new Gem(800,125,800,'green');
 //Populates array of Gems
 allGems.push(g1,g2,g3);
 
@@ -81,16 +105,14 @@ allGems.push(g1,g2,g3);
 //Instantiation of Enemies
 var allEnemies = [];
 
-var e1 = new Enemy(75,200,200);
-var e2 = new Enemy(300,135,300);
+var e1 = new Enemy(75,200,500);
+var e2 = new Enemy(300,135,350);
 var e3 = new Enemy(175,50,150);
 var e4 = new Enemy(250,250,250);
-var e5 = new Enemy(0,100,400);
+var e5 = new Enemy(0,100,420);
 
 //Populates array of enemies
 allEnemies.push(e1,e2,e3,e4,e5);
-
-
 
 
 // The Player class
@@ -162,32 +184,45 @@ Player.prototype.handleInput = function(keycode) {
     } 
 };
 
+function updateScore(){
+    document.getElementById("theScore").innerHTML = "Score: " + Score;
+};
 
-
-
+// Checks the state of the function by iterating through positions of game objects
 var stateCheck = function (){
+
         for (var e = 0; e < allEnemies.length; e++) {
             if (allEnemies[e].x <= (player.x + 30) && (allEnemies[e].x + 30) >= player.x && 
                 allEnemies[e].y <= (player.y + 30) && (allEnemies[e].y + 30) >= player.y)
             {
-                player.resetLocation();
                 window.alert("    :(    Try Again Champ!!!    ");
+                player.resetLocation();
             }
         }
-
+        //if collision with a gem occurs, the gem is claimed and the rendering funcs will take note.
         for (var g = 0; g < allGems.length; g++) {
             if (allGems[g].x <= (player.x + 30) && (allGems[g].x + 30) >= player.x && 
                 allGems[g].y <= (player.y + 30) && (allGems[g].y + 30) >= player.y)
             {
-                window.alert("    10 points!!!    ");
+                allGems[g].claimed = true;
+                var points = getGemPoints(allGems[g].type);
+                Score += points;
+                window.alert(getGemPoints(allGems[g].type) + " points!!!    ");
             }
         }        
 
-        if (player.y <= -10){
+        if (player.y <= -10 && Score > 0 ){
             window.alert("    :D    Way To Go Boss!!!    ");
             player.resetLocation();
         }
+
+        if (player.y <= -10 && !(Score > 0) ){
+            window.alert("    :/    You need to get a gem before fleeing to the water !!!    ");
+        }
     };
+
+
+
 
 
 
