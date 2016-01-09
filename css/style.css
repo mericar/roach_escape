@@ -17,3 +17,7 @@ body {
 	font-family: "Courier", Times, sans-serif;
 	text-align: center;
 }
+
+canvas {
+    margin-bottom: 80px;
+}

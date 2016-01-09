@@ -6,7 +6,6 @@ var gemPic = {
     'orange':'images/Gem-Orange.png',
 };
 
-
 var gemPoints = {
     'green': 100,
     'blue': 500,
@@ -15,10 +14,7 @@ var gemPoints = {
 
 function getGemPoints(gemtype){
     return gemPoints.gemtype;
-};
-console.log(getGemPoints('green'));
-
-
+}
 
 //Gem object
 var Gem = function(x, y, pace, gemtype){
@@ -26,7 +22,7 @@ var Gem = function(x, y, pace, gemtype){
 
         case 'green':
         this.sprite = gemPic.green;
-        this.type = 'green'
+        this.type = 'green';
         break;
 
         case 'blue':
@@ -43,18 +39,7 @@ var Gem = function(x, y, pace, gemtype){
     this.x = x;
     this.y = y;
     this.claimed = false;
-}
-
-//Instantiation of Gems
-var allGems = [];
-var g1 = new Gem(40,50,990,'orange');
-var g2 = new Gem(400,200,675,'blue');
-var g3 = new Gem(800,125,800,'green');
-//Populates array of Gems
-allGems.push(g1,g2,g3);
-
-//gemCount
-var gemCount = allGems.length;
+};
 
 // Purpose: updates location of Gem
 // Param: dt is a time delta
@@ -75,12 +60,22 @@ Gem.prototype.render = function() {
 
 // reset Gem claimed status
 function gemReset() {
-            allGems.forEach(function(gem){
-            gem.claimed = false;
-            gemCount = allGems.length;
-        });
-};
+    allGems.forEach(function(gem){
+        gem.claimed = false;
+        gemCount = allGems.length;
+    });
+}
 
+//Instantiation of Gems
+var allGems = [];
+var g1 = new Gem(40,50,990,'orange');
+var g2 = new Gem(400,200,675,'blue');
+var g3 = new Gem(800,125,800,'green');
+//Populates array of Gems
+allGems.push(g1,g2,g3);
+
+//gemCount
+var gemCount = allGems.length;
 
 
 // Enemy object
@@ -108,8 +103,6 @@ Enemy.prototype.render = function() {
     ctx.drawImage(Resources.get(this.sprite), this.x, this.y);
 };
 
-
-
 //Instantiation of Enemies
 var allEnemies = [];
 
@@ -133,45 +126,40 @@ var Player = function() {
 };
 
 Player.prototype.reset = function(){
-    player.x = 450;
-    player.y = 410;
-    player.score = 0;
-}
-
-//Instantiate player variable
-var player = new Player();
+    this.x = 450;
+    this.y = 410;
+    this.score = 0;
+};
 
 // Purpose: Updates the player game state
 // Param: dt is a time delta
 Player.prototype.update = function() {
     for (var e = 0; e < allEnemies.length; e++) {
-            if (allEnemies[e].x <= (player.x + 30) && (allEnemies[e].x + 30) >= player.x && 
-                allEnemies[e].y <= (player.y + 30) && (allEnemies[e].y + 30) >= player.y)
-            {
-                window.alert("    :(    Try Again Champ!!!    ");
-                player.reset();
-                gemReset();
-            }
+        if (allEnemies[e].x <= (this.x + 30) && (allEnemies[e].x + 30) >= this.x && 
+            allEnemies[e].y <= (this.y + 30) && (allEnemies[e].y + 30) >= this.y)
+        {
+            window.alert("    :(    Try Again Champ!!!    ");
+            this.reset();
+            gemReset();
         }
-        //if collision with a gem occurs, the gem is claimed and the rendering funcs will take note.
-        for (var g = 0; g < allGems.length; g++) {
-            if (allGems[g].x <= (player.x + 30) && (allGems[g].x + 30) >= player.x && 
-                allGems[g].y <= (player.y + 30) && (allGems[g].y + 30) >= player.y)
+    }
+    //if collision with a gem occurs, the gem is claimed and the rendering funcs will take note.
+    for (var g = 0; g < allGems.length; g++) {
+        if (allGems[g].x <= (this.x + 30) && (allGems[g].x + 30) >= this.x && 
+            allGems[g].y <= (this.y + 30) && (allGems[g].y + 30) >= this.y)
             {
                 allGems[g].claimed = true;
                 var points = getGemPoints(allGems[g].type);
-                player.score++;
+                this.score++;
                 console.log(player.score);
             }
         }        
 
-        if (player.y <= -10 && player.score > 10 ){
-            window.alert("    :D    Way To Go Boss!!!    ");
-            player.reset();
-            gemReset();
-
-        }
-
+    if (this.y <= -10 && this.score > 10 ){
+        window.alert("    :D    Way To Go Boss!!!    ");
+        this.reset();
+        gemReset();
+    }
 };
 
 //Draw player on the screen
@@ -183,43 +171,45 @@ Player.prototype.render = function() {
 Player.prototype.handleInput = function(keycode) {
     switch(keycode) {
         case 'left':
-            if(player.x - player.pace >= 0){
-                player.x -=  player.pace;
-            }else{
-                player.x = 0;
-            }
-            console.log(player.x + ' , ' + player.y);
-            break;
+        if(this.x - this.pace >= 0){
+            this.x -=  this.pace;
+        }else{
+            this.x = 0;
+        }
+        console.log(this.x + ' , ' + this.y);
+        break;
 
         case 'up':
-            if(player.y - player.pace >= -10){
-                player.y -=  player.pace;
-            }else{
-                player.y = -10;
-            }
-            console.log(player.x + ' , ' + player.y);
-            break;
+        if(this.y - this.pace >= -10){
+            this.y -=  this.pace;
+        }else{
+            this.y = -10;
+        }
+        console.log(this.x + ' , ' + this.y);
+        break;
 
         case 'right':
-            if(player.x + player.pace <= 990){
-                player.x +=  player.pace;
-            }else{
-                player.x = 990;
-            }
-            console.log(player.x + ' , ' + player.y);
-            break;
+        if(this.x + this.pace <= 990){
+            this.x +=  this.pace;
+        }else{
+            this.x = 990;
+        }
+        console.log(this.x + ' , ' + this.y);
+        break;
 
         case 'down':
-            if (player.y + player.pace <=410){
-                player.y += player.pace;
-            }else{
-                player.y = 410;
-            }
-            console.log(player.x + ' , ' + player.y);
-            break;
+        if (this.y + this.pace <=410){
+            this.y += this.pace;
+        }else{
+            this.y = 410;
+        }
+        console.log(this.x + ' , ' + this.y);
+        break;
     } 
 };
 
+//Instantiate player variable
+var player = new Player();
 
 // This listens for key presses and sends the keys to your
 // Player.handleInput() method. You don't need to modify this.
